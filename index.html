@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Database API Example</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Use the Roboto font */
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 250px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result-container {
+            margin-top: 20px;
+        }
+
+        #result-container div {
+            background-color: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        #result-container p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h2>Hello there!</h2>
+    <input type="text" id="search-input" placeholder="Search for a person">
+    <button onclick="search()">Search</button>
+    <button onclick="deleteResults()">Refresh</button>
+
+    <div id="result-container"></div>
+
+    <script>
+        async function search() {
+            const searchTerm = document.getElementById('search-input').value;
+
+            if (searchTerm.trim() !== '') {
+                const url = `https://api.themoviedb.org/3/search/person?include_adult=false&language=en-US&page=1&query=${searchTerm}`;
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        accept: 'application/json',
+                        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ODI4YTc5YmJmOGE4YmQ4YzNlNWZjMWM4NDY5NjUzNiIsInN1YiI6IjY1MWNmOWFjMmYzYjE3MDBlNDBhMDZkMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uC3a3Yc3YtMMtYt-_h3CgpfqWgq-63R3mF-iJbYF_a8'
+                    }
+                };
+
+                try {
+                    const response = await fetch(url, options);
+                    const data = await response.json();
+
+                    if (data.results) {
+                        const results = data.results;
+                        const resultContainer = document.getElementById('result-container');
+
+                        results.forEach(result => {
+                            const resultElement = document.createElement('div');
+                            resultElement.innerHTML = `<p>Name: ${result.name}</p><p>Known For:${result.known_for.map(movie => movie.title)}</p>`;
+                            resultContainer.appendChild(resultElement);
+                        });
+                    } else {
+                        console.error('No results found.');
+                    }
+                } catch (err) {
+                    console.error('error:' + err);
+                }
+            }
+        }
+
+        async function deleteResults() {
+            const resultContainer = document.getElementById('result-container');
+            while (resultContainer.firstChild) {
+                resultContainer.removeChild(resultContainer.firstChild);
+            }
+        }
+    </script>
+</body>
+</html>
