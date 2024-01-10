@@ -1,17 +1,21 @@
 {
-  "name": "tmdb",
-  "version": "1.0.0",
-  "description": "TMDB API demo",
-  "main": "app.js",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.18.2",
-    "fetch": "^1.1.0",
-    "node-fetch": "^3.3.2"
-  }
+    "name": "tmdb",
+    "version": "1.0.0",
+    "description": "TMDB API demo",
+    "main": "app.js",
+    "type": "module",
+    "scripts": {
+        "start": "node app"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "ejs": "^3.1.9",
+        "express": "^4.18.2",
+        "fetch": "^1.1.0",
+        "node-fetch": "^3.3.2"
+    },
+    "devDependencies": {
+        "tailwindcss": "^3.4.1"
+    }
 }
